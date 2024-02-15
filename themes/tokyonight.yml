@@ -1,0 +1,12 @@
+# Tokyonight
+- "#15161e" # 0 panel background
+- "#2F343F" # 1 Inactive Window Margin Background
+- "#f8f8f2" # 2 font color Main
+- "#3d59a1" # 3 Current Window Background
+- "#3b4261" # 4 Workspace open on other screen
+- "#3d59a1" # 5 Current Workspace
+- "#7aa2f7" # 6 Inactive group with windows
+- "#7aa2f7" # 7 color for 'odd widgets'
+- "#15161e" # 8 font color for 'odd widgets'
+- "#1a1b26" # 9 color for the 'even widgets'
+- "#7aa2f7" # 10 font color for 'even widgets'
