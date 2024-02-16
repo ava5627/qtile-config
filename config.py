@@ -589,7 +589,7 @@ floating_layout = layout.Floating(
         Match(wm_class="copyq"),
         Match(wm_class="qalculate-gtk"),
         Match(title="Friends List", wm_class="steam"),
-        Match(wm_class="pavucontrol"),
+        # Match(wm_class="pavucontrol"),
         Match(wm_class="confirmreset"),  # gitk
         Match(wm_class="makebranch"),  # gitk
         Match(wm_class="maketag"),  # gitk
