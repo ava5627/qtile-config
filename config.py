@@ -2,16 +2,14 @@ import os
 import subprocess
 from datetime import timedelta, datetime
 
-import yaml
 from libqtile import bar, hook, layout, qtile, widget
 from libqtile.config import Click, Drag, EzKey, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.log_utils import logger
-from Xlib import display as xdisplay
 
 from group_config import go_to_group, group_keys, groups_list, group_screen
 
-from PIL import Image
+import json
 
 # 0 Copyright (c) 2010 Aldo Cortesi
 # Copyright (c) 2010, 2014 dequis
@@ -45,10 +43,10 @@ groups = groups_list
 hostname = os.uname().nodename
 laptop = "MSI" in hostname
 
-
-theme = os.path.expanduser("~") + "/.config/qtile/themes/tokyonight.yml"
+# TODO: swap other themes to json
+theme = os.path.expanduser("~") + "/.config/qtile/themes/tokyonight.json"
 with open(theme) as theme_file:
-    colors = yaml.load(theme_file, yaml.Loader)
+    colors = json.load(theme_file)
 
 powerline_colors = [[colors[7], colors[8]], [colors[9], colors[10]]]
 
@@ -202,12 +200,17 @@ def prev_window(qtile):
 
 @lazy.function
 def pick_color(qtile):
-    color = subprocess.check_output("xcolor").decode("utf-8").strip()
-    image = Image.new("RGB", (100, 100), color)
-    image.save("/tmp/color.png")
-    qtile.spawn(["dunstify", color, "-i", "/tmp/color.png"])
-    qtile.spawn(f"echo -n \\{color} | xclip -sel clip", shell=True)
-    logger.warning(f"Color: {color}")
+    try:
+        from PIL import Image
+        color = subprocess.check_output("xcolor").decode("utf-8").strip()
+        image = Image.new("RGB", (100, 100), color)
+        image.save("/tmp/color.png")
+        qtile.spawn(["dunstify", color, "-i", "/tmp/color.png"])
+        qtile.spawn(f"echo -n \\{color} | xclip -sel clip", shell=True)
+        logger.warning(f"Color: {color}")
+    except ImportError:
+        logger.error("PIL is not installed")
+        qtile.spawn(["notify-send", "Qtile config error", "PIL is not installed"])
 
 
 my_keys = [
@@ -534,6 +537,7 @@ def parse_nightscout(data):
 def get_num_monitors():
     num_monitors = 0
     try:
+        from Xlib import display as xdisplay
         display = xdisplay.Display()
         screen = display.screen()
         resources = screen.root.xrandr_get_screen_resources()
@@ -547,6 +551,9 @@ def get_num_monitors():
                 preferred = monitor.num_preferred
             if preferred:
                 num_monitors += 1
+    except ImportError:
+        logger.error("Xlib is not installed")
+        subprocess.call(["notify-send", "Qtile config error", "Xlib is not installed"])
     except Exception as e:
         # always setup at least one monitor
         logger.error(f"Exception while getting num monitors: {e}")
