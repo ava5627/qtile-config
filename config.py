@@ -210,7 +210,6 @@ def pick_color(qtile):
         logger.warning(f"Color: {color}")
     except ImportError:
         logger.error("PIL is not installed")
-        qtile.spawn(["notify-send", "Qtile config error", "PIL is not installed"])
 
 
 my_keys = [
@@ -553,7 +552,6 @@ def get_num_monitors():
                 num_monitors += 1
     except ImportError:
         logger.error("Xlib is not installed")
-        subprocess.call(["notify-send", "Qtile config error", "Xlib is not installed"])
     except Exception as e:
         # always setup at least one monitor
         logger.error(f"Exception while getting num monitors: {e}")
