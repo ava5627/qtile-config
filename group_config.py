@@ -59,10 +59,6 @@ groups_list = [
     Group("4", matches=[]),
     Group("5", matches=[]),
     Group("6", matches=[]),
-    Group("7", matches=[]),
-    Group("8", matches=[]),
-    Group("9", matches=[]),
-    Group("0", matches=[]),
     Group("a", matches=[Match(wm_class="discord")]),
     Group("s", matches=[]),
     Group("d", matches=[]),
@@ -72,6 +68,10 @@ groups_list = [
     Group("z", matches=[]),
     Group("x", matches=[]),
     Group("c", matches=[]),
+    Group("7", matches=[]),
+    Group("8", matches=[]),
+    Group("9", matches=[]),
+    Group("0", matches=[]),
 ]
 
 group_keys = []
