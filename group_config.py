@@ -1,6 +1,8 @@
 from libqtile.config import Group, Match
 from libqtile.lazy import lazy
 
+from config import get_num_monitors
+
 
 def _go_to_group(name):
     @lazy.function
@@ -30,7 +32,7 @@ def group_screen(group):
         screen = 1
     elif group.name in "zxc7890":
         screen = 2
-    return screen
+    return screen % get_num_monitors()
 
 
 def switch_group(direction):
