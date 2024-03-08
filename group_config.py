@@ -25,9 +25,8 @@ def get_num_monitors():
     except Exception as e:
         # always setup at least one monitor
         logger.error(f"Exception while getting num monitors: {e}")
-        return 1
-    else:
-        return num_monitors
+    finally:
+        return max(1, num_monitors)
 
 
 def _go_to_group(name):

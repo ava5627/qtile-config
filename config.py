@@ -11,44 +11,17 @@ from group_config import go_to_group, group_keys, groups_list, group_screen, get
 
 import json
 
-# 0 Copyright (c) 2010 Aldo Cortesi
-# Copyright (c) 2010, 2014 dequis
-# Copyright (c) 2012 Randall Ma
-# Copyright (c) 2012-2014 Tycho Andersen
-# Copyright (c) 2012 Craig Barnes
-# Copyright (c) 2013 horsik
-# Copyright (c) 2013 Tao Sauvage
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
-
 groups = groups_list
 
 hostname = os.uname().nodename
 laptop = "MSI" in hostname
 
-# TODO: swap other themes to json
-theme = os.path.expanduser("~") + "/.config/qtile/themes/tokyonight.json"
+theme = os.path.expanduser("~") + "/.config/qtile/colors.json"
+if not os.path.exists(theme):
+    theme.replace("colors.json", "themes/tokyonight.json")
 with open(theme) as theme_file:
     colors = json.load(theme_file)
-
-powerline_colors = [[colors[7], colors[8]], [colors[9], colors[10]]]
+powerline_colors = colors["powerline-colors"]
 
 EzKey.modifier_keys = {
     "M": "mod4",
@@ -153,7 +126,9 @@ def remove_column(qtile):
 
 @lazy.function
 def debug_function(qtile):
-    logger.warning(f"Current layout: {qtile.current_layout.name}")
+    import sys
+    logger.warning(sys.executable)
+    logger.warning(sys.argv)
 
 
 @lazy.function
@@ -303,8 +278,8 @@ keys = [EzKey(bind, *cmd, desc=desc) for bind, *cmd, desc in my_keys]
 layout_theme = {
     "border_width": 2,
     "margin": 2,
-    "border_focus": colors[3],
-    "border_normal": colors[1],
+    "border_focus": colors["active"],
+    "border_normal": colors["inactive"],
     "border_on_single": True,
     "margin_on_single": 4,
 }
@@ -329,8 +304,8 @@ widget_defaults = dict(
     font="Source Code Pro",
     fontsize=12,
     padding=2,
-    foreground=colors[2],
-    background=colors[0],
+    foreground=colors["foreground"],
+    background=colors["background"],
 )
 extension_defaults = widget_defaults.copy()
 
@@ -339,13 +314,18 @@ def make_powerline(widgets):
     powerline = []
     odd = len(widgets) % 2
     for i, w in enumerate(widgets):
-        index = (i + 1 - odd) % len(powerline_colors)
-        next_index = (i - odd) % len(powerline_colors)
-        bg = powerline_colors[index][0]
-        fg = powerline_colors[next_index][0]
-        text_fg = powerline_colors[index][1]
+        index = (i + 1 - odd) % 2
+        if index == 0:
+            index = "even"
+            next_index = "odd"
+        else:
+            index = "odd"
+            next_index = "even"
+        bg = powerline_colors[index]
+        fg = powerline_colors[next_index]
+        text_fg = powerline_colors[next_index]
         if i == 0:
-            fg = colors[0]
+            fg = colors["background"]
         powerline.append(
             widget.TextBox(
                 font="Source Code Pro",
@@ -373,7 +353,7 @@ def make_powerline(widgets):
 
 def make_widgets(screen):
     widget_list = [
-        widget.Sep(linewidth=0, padding=6, background=colors[0]),
+        widget.Sep(linewidth=0, padding=6),
         widget.GroupBox(
             font="Source Code Pro Bold",
             margin_y=3,
@@ -381,14 +361,14 @@ def make_widgets(screen):
             padding_y=5,
             padding_x=3,
             borderwidth=3,
-            active=colors[6],
-            inactive=colors[2],
+            active=colors["active-group-foreground"],
+            inactive=colors["foreground"],
             rounded=False,
             highlight_method="block",
-            this_current_screen_border=colors[5],
-            this_screen_border=colors[4],
-            other_current_screen_border=colors[5],
-            other_screen_border=colors[4],
+            this_current_screen_border=colors["current-group-background"],
+            this_screen_border=colors["other-screen-group-background"],
+            other_current_screen_border=colors["current-group-background"],
+            other_screen_border=colors["other-screen-group-background"],
             use_mouse_wheel=False,
             hide_unused=True,
             disable_drag=True,
@@ -397,7 +377,6 @@ def make_widgets(screen):
         ),
         widget.TaskList(
             rounded=False,
-            background=colors[0],
             highlight_method="block",
             margin_y=0,
             margin_x=0,
@@ -405,7 +384,7 @@ def make_widgets(screen):
             padding_x=3,
             borderwidth=3,
             icon_size=0,
-            border=colors[3],
+            border=colors["active"],
         ),
         widget.Sep(
             linewidth=0,
@@ -533,6 +512,7 @@ def parse_nightscout(data):
     return f"{arrow} {glucose} {delta_s}mg/dL "
 
 
+
 num_monitors = get_num_monitors()
 
 
@@ -577,8 +557,8 @@ floating_layout = layout.Floating(
         Match(wm_class="Arandr"),
         Match(wm_class="feh"),
     ],
-    border_focus=colors[3],
-    border_normal=colors[1],
+    border_focus=colors["active"],
+    border_normal=colors["inactive"],
     border_width=2,
 )
 auto_fullscreen = True

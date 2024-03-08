@@ -1,13 +1,13 @@
-[
-    "#15161e",
-    "#2F343F",
-    "#f8f8f2",
-    "#3d59a1",
-    "#3b4261",
-    "#3d59a1",
-    "#7aa2f7",
-    "#7aa2f7",
-    "#15161e",
-    "#1a1b26",
-    "#7aa2f7"
-]
+{
+    "active": "#3d59a1",
+    "active-group-foreground": "#7aa2f7",
+    "background": "#15161e",
+    "current-group-background": "#3d59a1",
+    "foreground": "#f8f8f2",
+    "inactive": "#2f343f",
+    "other-screen-group-background": "#3b4261",
+    "powerline-colors": {
+        "even": "#7aa2f7",
+        "odd": "#1a1b26"
+    }
+}
