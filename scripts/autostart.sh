@@ -1,20 +1,12 @@
 #!/usr/bin/env bash
-source /etc/os-release
-if [ "$ID" != "nixos" ]; then
-    nm-applet &
-    xfce4-power-manager &
-    picom --config $HOME/.config/qtile/scripts/picom.conf &
-    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-    dunst &
-    playerctld &
-    flameshot &
-fi
 
-#starting utility applications at boot time
-openrgb -p Off &
-blueberry-tray &
 feh --no-fehbg --bg-scale $HOME/Pictures/'Saved Pictures'/Wallpapers/camp_fire.jpg &
 copyq &
+
+[ -n "$QUICK_START" ] && exit 0
+
+openrgb -p Off &
+blueberry-tray &
 solaar -w hide &
 discord &
 steam -silent &
