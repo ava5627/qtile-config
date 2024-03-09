@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-feh --no-fehbg --bg-scale $HOME/Pictures/'Saved Pictures'/Wallpapers/camp_fire.jpg &
+feh --no-fehbg --bg-scale $HOME/Pictures/Wallpapers/camp_fire.jpg &
+flameshot &
 copyq &
 
 [ -n "$QUICK_START" ] && exit 0
@@ -10,7 +11,7 @@ blueberry-tray &
 solaar -w hide &
 discord &
 steam -silent &
-kdeconnect-indicator &
+systemctl restart --user kdeconnect-indicator &
 morgen --hidden &
 insync start --no-daemon &
 firefox &
