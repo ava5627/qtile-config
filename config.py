@@ -215,7 +215,7 @@ my_keys = [
     ["M-w", lazy.spawn("firefox"), "Launch Firefox"],
     ["M-S-w", lazy.spawn("firefox -private-window"), "Launch Private Firefox"],
     ["M-g", lazy.spawn("qalculate-gtk"), "Launch Calculator"],
-    ["M-S-e", lazy.spawn("copyq show"), "Show Copyq"],
+    ["M-S-e", lazy.spawn("copyq toggle"), "toggle Copyq"],
     ["M-r", lazy.spawn("rofi -show run -i", shell=True), "Run Launcher"],
     [
         "M-S-r",
@@ -344,9 +344,6 @@ def make_powerline(widgets):
         else:
             w.background = bg
             w.foreground = text_fg
-            if type(w) is widget.CheckUpdates:
-                w.colour_have_updates = text_fg
-                w.colour_no_updates = text_fg
             powerline.append(w)
     return powerline
 
@@ -425,16 +422,6 @@ def make_widgets(screen):
                 ),
             },
             step=5,
-        ),
-        widget.CheckUpdates(
-            update_interval=3600,
-            distro="Arch_checkupdates",
-            display_format="{updates} Updates",
-            mouse_callbacks={
-                "Button1": lambda: qtile.spawn(terminal + " -e sudo pacman -Syu")
-            },
-            no_update_string="0 Updates",
-            padding=5,
         ),
         widget.Clock(
             font="Source Code Pro Bold",
