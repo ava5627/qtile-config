@@ -6,8 +6,8 @@
     "foreground": "#f8f8f2",
     "inactive": "#2f343f",
     "other-screen-group-background": "#3b4261",
-    "powerline-colors": {
-        "even": "#7aa2f7",
-        "odd": "#1a1b26"
-    }
+    "powerline-colors": [
+        { "fg": "#7aa2f7", "bg": "#1a1b26" },
+        { "fg": "#1a1b26", "bg": "#7aa2f7" }
+    ]
 }

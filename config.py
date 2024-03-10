@@ -126,9 +126,7 @@ def remove_column(qtile):
 
 @lazy.function
 def debug_function(qtile):
-    import sys
-    logger.warning(sys.executable)
-    logger.warning(sys.argv)
+    logger.warning(colors)
 
 
 @lazy.function
@@ -314,16 +312,11 @@ def make_powerline(widgets):
     powerline = []
     odd = len(widgets) % 2
     for i, w in enumerate(widgets):
-        index = (i + 1 - odd) % 2
-        if index == 0:
-            index = "even"
-            next_index = "odd"
-        else:
-            index = "odd"
-            next_index = "even"
-        bg = powerline_colors[index]
-        fg = powerline_colors[next_index]
-        text_fg = powerline_colors[next_index]
+        index = (i + 1 - odd) % len(powerline_colors)
+        next_index = (index + 1) % len(powerline_colors)
+        bg = powerline_colors[index]["bg"]
+        text_fg = powerline_colors[index]["fg"]
+        fg = powerline_colors[next_index]["bg"]
         if i == 0:
             fg = colors["background"]
         powerline.append(
