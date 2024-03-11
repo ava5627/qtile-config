@@ -492,7 +492,6 @@ def parse_nightscout(data):
     return f"{arrow} {glucose} {delta_s}mg/dL "
 
 
-
 num_monitors = get_num_monitors()
 
 
