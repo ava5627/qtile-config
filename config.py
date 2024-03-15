@@ -405,7 +405,7 @@ def make_widgets(screen):
             update_interval=150,
             json=True
         ),
-        widget.Volume(
+        widget.PulseVolume(
             fmt=" {}",
             padding=5,
             mouse_callbacks={
