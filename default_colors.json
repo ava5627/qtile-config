@@ -1,0 +1,19 @@
+{
+    "active": "#3d59a1",
+    "active-group-foreground": "#7aa2f7",
+    "background": "#15161e",
+    "current-group-background": "#3d59a1",
+    "foreground": "#f8f8f2",
+    "inactive": "#292e42",
+    "other-screen-group-background": "#292e42",
+    "powerline-colors": [
+        {
+            "bg": "#7aa2f7",
+            "fg": "#1a1b26"
+        },
+        {
+            "bg": "#1a1b26",
+            "fg": "#7aa2f7"
+        }
+    ]
+}
