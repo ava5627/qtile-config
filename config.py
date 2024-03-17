@@ -399,7 +399,7 @@ def make_widgets(screen):
             padding=5,
         ),
         widget.GenPollUrl(
-            url='http://localhost:1337/api/v1/entries/sgv?count=1',
+            url='http://136.62.179.130:1337/api/v1/entries/sgv?count=1',
             headers={'accept': 'application/json'},
             parse=parse_nightscout,
             update_interval=150,
@@ -439,7 +439,7 @@ def make_widgets(screen):
         pl_list.insert(-1, systray)
     if laptop:
         battery_widget = widget.Battery(
-            format=" {percent:2.0%} {char}{hour:d}:{min:02d}",
+            format="  {percent:2.0%} {char}{hour:d}:{min:02d}",
             charge_char="+",
             discharge_char="-",
             empty_char="x",
