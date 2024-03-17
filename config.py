@@ -483,13 +483,13 @@ def parse_nightscout(data):
         arrow = "󰁆󰁆"
 
     if delta > 0:
-        delta_s = f"+{delta:.0f}"
+        delta_s = f"+{delta:.0f}mg/dL "
     elif delta < 0:
-        delta_s = f"{delta:.0f}"
+        delta_s = f"{delta:.0f}mg/dL "
     else:
         delta_s = ""
 
-    return f"{arrow} {glucose} {delta_s}mg/dL "
+    return f"{arrow} {glucose} {delta_s}"
 
 
 num_monitors = get_num_monitors()
