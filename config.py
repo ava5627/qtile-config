@@ -234,22 +234,22 @@ my_keys = [
     # Media keys
     [
         "<XF86AudioRaiseVolume>",
-        lazy.spawn("amixer -q -D pulse set Master 5%+"),
+        lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"),
         "Raise volume by 5%",
     ],
     [
         "<XF86AudioLowerVolume>",
-        lazy.spawn("amixer -q -D pulse set Master 5%-"),
+        lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),
         "Lower volume by 5%",
     ],
     [
         "<XF86AudioMute>",
-        lazy.spawn("amixer -q -D pulse set Master toggle"),
+        lazy.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
         "Toggle Mute",
     ],
     [
         "S-<XF86AudioPlay>",
-        lazy.spawn("amixer -q -D pulse set Master toggle"),
+        lazy.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
         "Toggle Mute",
     ],
     ["<XF86AudioPlay>", lazy.spawn("playerctl --player playerctld play-pause"), "Play/Pause"],
@@ -406,12 +406,12 @@ def make_widgets(screen):
             json=True
         ),
         widget.PulseVolume(
-            fmt=" {}",
+            fmt="  {}",
             padding=5,
             mouse_callbacks={
                 "Button1": lambda: qtile.spawn("pavucontrol"),
                 "Button3": lambda: qtile.spawn(
-                    "amixer -q -D pulse set Master toggle"
+                    "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
                 ),
             },
             step=5,
