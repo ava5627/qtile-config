@@ -541,7 +541,7 @@ floating_layout = layout.Floating(
     border_width=2,
 )
 auto_fullscreen = True
-focus_on_window_activation = "smart"
+focus_on_window_activation = "urgent"
 reconfigure_screens = True
 
 # If things like steam games want to auto-minimize themselves when losing
