@@ -405,7 +405,8 @@ def make_widgets(screen):
             json=True
         ),
         widget.PulseVolume(
-            fmt="  {}",
+            unmute_format="  {volume}%",
+            mute_format="  0%",
             padding=5,
             mouse_callbacks={
                 "Button1": lambda: qtile.spawn("pavucontrol"),
