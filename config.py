@@ -462,7 +462,8 @@ def make_widgets(screen):
 
 
 def parse_nightscout(data):
-    if datetime.now() - datetime.fromtimestamp(data[0]["date"] / 1000) > timedelta(minutes=10):
+    dtime = datetime.now() - datetime.fromtimestamp(data[0]["date"] / 1000)
+    if dtime > timedelta(minutes=15):
         return "-- No data"
     glucose = data[0]["sgv"]
     direction = data[0]["direction"]
