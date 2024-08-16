@@ -51,11 +51,11 @@ def go_to_group(qtile, name):
 
 def group_screen(group):
     screen = 0
-    if group.name in "123456":
+    if group.name in "12345":
         screen = 0
     elif group.name in "asduio":
         screen = 1
-    elif group.name in "zxc7890":
+    elif group.name in "zxc67890":
         screen = 2
     return screen % get_num_monitors()
 
