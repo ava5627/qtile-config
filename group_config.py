@@ -7,6 +7,7 @@ def get_num_monitors():
     num_monitors = 0
     try:
         from Xlib import display as xdisplay
+
         display = xdisplay.Display()
         screen = display.screen()
         resources = screen.root.xrandr_get_screen_resources()
@@ -30,6 +31,7 @@ def get_num_monitors():
 
 
 def _go_to_group(name):
+
     @lazy.function
     def _inner(qtile):
         go_to_group(qtile, name)
@@ -51,16 +53,17 @@ def go_to_group(qtile, name):
 
 def group_screen(group):
     screen = 0
-    if group.name in "12345":
+    if group.name in "123456":
         screen = 0
     elif group.name in "asduio":
         screen = 1
-    elif group.name in "zxc67890":
+    elif group.name in "zxc7890":
         screen = 2
     return screen % get_num_monitors()
 
 
 def switch_group(direction):
+
     @lazy.function
     def _switch_group(qtile):
         cg = qtile.current_screen.group
@@ -74,8 +77,31 @@ def switch_group(direction):
     return _switch_group
 
 
-original_groups = {}
+def group_key(name, alt=False):
+    if alt:
+        key = "A-" + unfrequent_groups_name_map[name]
+    else:
+        key = name
+    return [
+        # mod1 + key of group = switch to group
+        ["M-" + key, _go_to_group(name), f"Switch to group {name}"],
+        # mod1 + shift + key of group = move focused window to group
+        [
+            "M-S-" + key,
+            lazy.window.togroup(name),
+            f"Move window to group {name}",
+        ],
+        # mod1 + control + key of group = move focused window and switch to group
+        [
+            "M-C-" + key,
+            lazy.window.togroup(name),
+            _go_to_group(name),
+            f"Move and switch to group {name}",
+        ],
+    ]
 
+
+original_groups = {}
 
 groups_list = [
     Group("1", layout="max", matches=[]),
@@ -99,27 +125,24 @@ groups_list = [
     Group("0", matches=[]),
 ]
 
+unfrequent_groups_name_map = {
+    "4": "1",
+    "5": "2",
+    "6": "3",
+    "u": "a",
+    "i": "s",
+    "o": "d",
+    "7": "z",
+    "8": "x",
+    "9": "c",
+}
+
 group_keys = []
 for i in groups_list:
-    group_keys.extend(
-        [
-            # mod1 + key of group = switch to group
-            ["M-" + i.name, _go_to_group(i.name), f"Switch to group {i.name}"],
-            # mod1 + shift + key of group = move focused window to group
-            [
-                "M-S-" + i.name,
-                lazy.window.togroup(i.name),
-                f"Move window to group {i.name}",
-            ],
-            # mod1 + control + key of group = move focused window and switch to group
-            [
-                "M-C-" + i.name,
-                lazy.window.togroup(i.name),
-                _go_to_group(i.name),
-                f"Move and switch to group {i.name}",
-            ],
-        ]
-    )
+    group_keys.extend(group_key(i.name))
+    # make M-A-...-<key> switch to group unfrequent_groups_name_map[<key>]
+    if i.name in unfrequent_groups_name_map:
+        group_keys.extend(group_key(i.name, alt=True))
 
 group_keys.extend(
     [
