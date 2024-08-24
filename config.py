@@ -222,7 +222,7 @@ my_keys = [
     ],
     ["M-v", lazy.spawn("edit_configs"), "Config Launcher"],
     ["<Print>", lazy.spawn("flameshot gui"), "Take Screenshot"],
-    ["<XF86Copy>", pick_color, "Pick color"],
+    ["M-<XF86Copy>", pick_color, "Pick color"],
     # Command keys
     ["M-C-r", lazy.reload_config(), "Reload Qtile config"],
     ["M-A-r", lazy.restart(), "Restart Qtile"],
