@@ -79,7 +79,7 @@ def switch_group(direction):
 
 def group_key(name, alt=False):
     if alt:
-        key = "A-" + unfrequent_groups_name_map[name]
+        key = "A-" + infrequent_groups_name_map[name]
     else:
         key = name
     return [
@@ -125,7 +125,7 @@ groups_list = [
     Group("0", matches=[]),
 ]
 
-unfrequent_groups_name_map = {
+infrequent_groups_name_map = {
     "4": "1",
     "5": "2",
     "6": "3",
@@ -140,8 +140,8 @@ unfrequent_groups_name_map = {
 group_keys = []
 for i in groups_list:
     group_keys.extend(group_key(i.name))
-    # make M-A-...-<key> switch to group unfrequent_groups_name_map[<key>]
-    if i.name in unfrequent_groups_name_map:
+    # make M-A-...-<key> switch to group infrequent_groups_name_map[<key>]
+    if i.name in infrequent_groups_name_map:
         group_keys.extend(group_key(i.name, alt=True))
 
 group_keys.extend(

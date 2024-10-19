@@ -1,15 +1,15 @@
+import json
 import os
 import subprocess
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
 
 from libqtile import bar, hook, layout, qtile, widget
 from libqtile.config import Click, Drag, EzKey, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.log_utils import logger
 
-from group_config import go_to_group, group_keys, groups_list, group_screen, get_num_monitors
-
-import json
+from group_config import (get_num_monitors, go_to_group, group_keys,
+                          group_screen, groups_list)
 
 groups = groups_list
 
@@ -92,13 +92,9 @@ def side(direction):
         # loop through all windows in next column
         # and focus the one that is next to the middle of the current window
         for i, win in enumerate(layout.cc.clients):
-            next_top = (
-                win.get_position()[1] - (layout.margin + layout.border_width) * 2
-            )
+            next_top = win.get_position()[1] - (layout.margin + layout.border_width) * 2
             next_bottom = (
-                next_top
-                + win.get_size()[1]
-                + (layout.margin + layout.border_width) * 2
+                next_top + win.get_size()[1] + (layout.margin + layout.border_width) * 2
             )
             if next_top <= current_middle <= next_bottom:
                 layout.cc.current_index = i
@@ -176,6 +172,7 @@ def prev_window(qtile):
 def pick_color(qtile):
     try:
         from PIL import Image
+
         color = subprocess.check_output("xcolor").decode("utf-8").strip()
         image = Image.new("RGB", (100, 100), color)
         image.save("/tmp/color.png")
@@ -191,13 +188,13 @@ my_keys = [
     ["M-k", prev_window, lazy.window.move_to_top(), "Move focus prev"],
     ["M-h", side(direction=-1), "Move focus left"],
     ["M-l", side(direction=1), "Move focus right"],
-    ["M-S-h", lazy.layout.shuffle_left(), "Move window left"],
-    ["M-S-l", lazy.layout.shuffle_right(), "Move window right"],
-    ["M-S-j", lazy.layout.shuffle_down(), "Move window down"],
-    ["M-S-k", lazy.layout.shuffle_up(), "Move window up"],
-    ["M-C-h", lazy.layout.grow_left(), "Grow window left"],
-    ["M-C-l", lazy.layout.grow_right(), "Grow window right"],
-    ["M-C-j", lazy.layout.grow_down(), "Grow window down"],
+    ["M-S-h", lazy.layout.shuffle_left().when(layout="columns"), "Move window left"],
+    ["M-S-l", lazy.layout.shuffle_right().when(layout="columns"), "Move window right"],
+    ["M-S-j", lazy.layout.shuffle_down().when(layout="columns"), "Move window down"],
+    ["M-S-k", lazy.layout.shuffle_up().when(layout="columns"), "Move window up"],
+    ["M-C-h", lazy.layout.grow_left().when(layout="columns"), "Grow window left"],
+    ["M-C-l", lazy.layout.grow_right().when(layout="columns"), "Grow window right"],
+    ["M-C-j", lazy.layout.grow_down().when(layout="columns"), "Grow window down"],
     ["M-C-k", lazy.layout.grow_up(), "Grow window up"],
     ["M-<bracketright>", add_column, "Add column"],
     ["M-<bracketleft>", remove_column, "Remove column"],
@@ -251,8 +248,16 @@ my_keys = [
         lazy.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
         "Toggle Mute",
     ],
-    ["<XF86AudioPlay>", lazy.spawn("playerctl --player playerctld play-pause"), "Play/Pause"],
-    ["<XF86AudioPause>", lazy.spawn("playerctl --player playerctld play-pause"), "Play/Pause"],
+    [
+        "<XF86AudioPlay>",
+        lazy.spawn("playerctl --player playerctld play-pause"),
+        "Play/Pause",
+    ],
+    [
+        "<XF86AudioPause>",
+        lazy.spawn("playerctl --player playerctld play-pause"),
+        "Play/Pause",
+    ],
     ["<XF86AudioNext>", lazy.spawn("playerctl --player playerctld next"), "Next"],
     ["<XF86AudioPrev>", lazy.spawn("playerctl --player playerctld previous"), "Next"],
     # ["<XF86AudioNext>", lazy.spawn("xdotool key ctrl+alt+period"), "Mute discord"],
@@ -278,23 +283,11 @@ layout_theme = {
     "border_focus": colors["active"],
     "border_normal": colors["inactive"],
     "border_on_single": True,
-    "margin_on_single": 4,
 }
 
 layouts = [
-    # layout.MonadTall(**layout_theme),
     layout.Columns(**layout_theme, insert_position=1, fair=True, num_columns=2),
     layout.Max(),
-    # Try more layouts by unleashing below layouts.
-    # layout.Stack(**layout_theme, num_stacks=2),
-    # layout.Bsp(**layout_theme),
-    # layout.Matrix(**layout_theme),
-    # layout.MonadWide(**layout_theme),
-    # layout.RatioTile(**layout_theme),
-    # layout.Tile(**layout_theme),
-    # layout.TreeTab(**layout_theme),
-    # layout.VerticalTile(**layout_theme),
-    # layout.Zoomy(**layout_theme),
 ]
 
 widget_defaults = dict(
@@ -362,7 +355,9 @@ def make_widgets(screen):
             hide_unused=True,
             disable_drag=True,
             toggle=False,
-            visible_groups=[group.name for group in groups_list if group_screen(group) == screen],
+            visible_groups=[
+                group.name for group in groups_list if group_screen(group) == screen
+            ],
         ),
         widget.TaskList(
             rounded=False,
@@ -394,15 +389,15 @@ def make_widgets(screen):
         ),
         widget.Net(
             format="{down:.2f}{down_suffix} ↓↑ {up:.2f}{up_suffix}",
-            prefix='M',
+            prefix="M",
             padding=5,
         ),
         widget.GenPollUrl(
-            url='http://136.62.179.130:1337/api/v1/entries/sgv?count=1',
-            headers={'accept': 'application/json'},
+            url="http://136.62.179.130:1337/api/v1/entries/sgv?count=1",
+            headers={"accept": "application/json"},
             parse=parse_nightscout,
             update_interval=150,
-            json=True
+            json=True,
         ),
         widget.PulseVolume(
             unmute_format="  {volume}%",
@@ -552,11 +547,11 @@ auto_minimize = False
 
 @hook.subscribe.startup_once
 def start_once():
+    qtile.groups_map["1"].toscreen(0)
     if len(qtile.screens) > 1:
         qtile.groups_map["a"].toscreen(1)
     if len(qtile.screens) > 2:
         qtile.groups_map["z"].toscreen(2)
-    qtile.groups_map["1"].toscreen(0)
     autostart = home + "/.config/qtile/autostart.sh"
     if os.path.exists(autostart):
         # auto start file generated by nixos
