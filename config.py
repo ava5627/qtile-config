@@ -344,7 +344,7 @@ def make_widgets(screen):
             padding_x=3,
             borderwidth=3,
             active=colors["active-group-foreground"],
-            inactive=colors["foreground"],
+            inactive=colors["active-group-foreground"],
             rounded=False,
             highlight_method="block",
             this_current_screen_border=colors["current-group-background"],
@@ -569,7 +569,7 @@ def set_floating(window):
 def fix_group(window):
     if "discord" not in window.get_wm_class():
         group = qtile.current_group
-        if window.group != group:
+        if window.group != group and window.floating:
             window.togroup(group.name)
 
 
