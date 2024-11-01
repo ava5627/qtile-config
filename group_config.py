@@ -57,8 +57,11 @@ def group_screen(group):
         screen = 0
     elif group.name in "asduio":
         screen = 1
-    elif group.name in "zxc7890":
+    elif group.name in "zxc789":
         screen = 2
+    else:
+        logger.warning(f"Group {group.name} not assigned to a screen")
+        screen = 0
     return screen % get_num_monitors()
 
 
@@ -77,11 +80,7 @@ def switch_group(direction):
     return _switch_group
 
 
-def group_key(name, alt=False):
-    if alt:
-        key = "A-" + infrequent_groups_name_map[name]
-    else:
-        key = name
+def group_key(key, name):
     return [
         # mod1 + key of group = switch to group
         ["M-" + key, _go_to_group(name), f"Switch to group {name}"],
@@ -103,46 +102,32 @@ def group_key(name, alt=False):
 
 original_groups = {}
 
-groups_list = [
-    Group("1", matches=[], layout="max"),
-    Group("2", matches=[]),
-    Group("3", matches=[]),
-    Group("4", matches=[]),
-    Group("5", matches=[]),
-    Group("6", matches=[]),
-    Group("a", matches=[Match(wm_class="discord")]),
-    Group("s", matches=[]),
-    Group("d", matches=[]),
-    Group("u", matches=[]),
-    Group("i", matches=[]),
-    Group("o", matches=[]),
-    Group("z", matches=[]),
-    Group("x", matches=[]),
-    Group("c", matches=[]),
-    Group("7", matches=[]),
-    Group("8", matches=[]),
-    Group("9", matches=[]),
-    Group("0", matches=[]),
-]
-
-infrequent_groups_name_map = {
-    "4": "1",
-    "5": "2",
-    "6": "3",
-    "u": "a",
-    "i": "s",
-    "o": "d",
-    "7": "z",
-    "8": "x",
-    "9": "c",
+groups_dict = {
+    Group("1", matches=[], layout="max"): "1",
+    Group("2", matches=[]): "2",
+    Group("3", matches=[]): "3",
+    Group("4", matches=[]): "A-1",
+    Group("5", matches=[]): "A-2",
+    Group("6", matches=[]): "A-3",
+    Group("a", matches=[Match(wm_class="discord")]): "4",
+    Group("s", matches=[]): "5",
+    Group("d", matches=[]): "6",
+    Group("u", matches=[]): "A-4",
+    Group("i", matches=[]): "A-5",
+    Group("o", matches=[]): "A-6",
+    Group("z", matches=[]): "7",
+    Group("x", matches=[]): "8",
+    Group("c", matches=[]): "9",
+    Group("7", matches=[]): "A-7",
+    Group("8", matches=[]): "A-8",
+    Group("9", matches=[]): "A-9",
 }
 
+groups_list = list(groups_dict.keys())
+
 group_keys = []
-for i in groups_list:
-    group_keys.extend(group_key(i.name))
-    # make M-A-...-<key> switch to group infrequent_groups_name_map[<key>]
-    if i.name in infrequent_groups_name_map:
-        group_keys.extend(group_key(i.name, alt=True))
+for i, k in groups_dict.items():
+    group_keys.extend(group_key(k, i.name))
 
 group_keys.extend(
     [
