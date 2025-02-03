@@ -392,13 +392,13 @@ def make_widgets(screen):
             prefix="M",
             padding=5,
         ),
-        widget.GenPollUrl(
-            url="http://136.62.179.130:1337/api/v1/entries/sgv?count=1",
-            headers={"accept": "application/json"},
-            parse=parse_nightscout,
-            update_interval=150,
-            json=True,
-        ),
+        # widget.GenPollUrl(
+        #     url="http://localhost:1337/api/v1/entries/sgv?count=1",
+        #     headers={"accept": "application/json"},
+        #     parse=parse_nightscout,
+        #     update_interval=150,
+        #     json=True,
+        # ),
         widget.PulseVolume(
             unmute_format="  {volume}%",
             mute_format="  0%",
