@@ -305,7 +305,7 @@ def make_powerline(widgets):
     odd = len(widgets) % 2
     for i, w in enumerate(widgets):
         index = (i + 1 - odd) % len(powerline_colors)
-        next_index = (index + 1) % len(powerline_colors)
+        next_index = (index - 1) % len(powerline_colors)
         bg = powerline_colors[index]["bg"]
         text_fg = powerline_colors[index]["fg"]
         fg = powerline_colors[next_index]["bg"]
