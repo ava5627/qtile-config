@@ -201,6 +201,7 @@ my_keys = [
         "Application Launcher",
     ],
     ["M-v", lazy.spawn("edit_configs"), "Config Launcher"],
+    ["M-c", lazy.spawn("edit_repos"), "Repos Launcher"],
     ["<Print>", lazy.spawn("flameshot gui"), "Take Screenshot"],
     ["M-<XF86Copy>", pick_color, "Pick color"],
     # Command keys
