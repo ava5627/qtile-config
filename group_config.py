@@ -65,17 +65,36 @@ def group_screen(group):
     return screen % get_num_monitors()
 
 
+def next_group_in_screen(group, direction):
+    if direction == 1:
+        match group.name:
+            case "6":
+                return "1"
+            case "o":
+                return "a"
+            case "9":
+                return "z"
+            case _:
+                return group._get_group(direction, False, False).name
+    else:
+        match group.name:
+            case "1":
+                return "6"
+            case "a":
+                return "o"
+            case "z":
+                return "9"
+            case _:
+                return group._get_group(direction, False, False).name
+
+
 def switch_group(direction):
 
     @lazy.function
     def _switch_group(qtile):
         cg = qtile.current_screen.group
-        next = cg
-        screen = -2
-        while screen != group_screen(cg):
-            next = next._get_group(direction, False, False)
-            screen = group_screen(next)
-        next.toscreen()
+        next_group = next_group_in_screen(cg, direction)
+        go_to_group(qtile, next_group)
 
     return _switch_group
 

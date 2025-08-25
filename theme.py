@@ -10,3 +10,20 @@ if not theme.exists():
 with open(theme) as theme_file:
     colors = json.load(theme_file)
 powerline_colors = colors["powerline-colors"]
+
+# active window border
+# inactive window border
+# powerline colors: fg and bg
+# group colors:
+#   has windows group font color: active
+#   no windows group font color: inactive
+#   focused active group current screen border color: this_current_screen_border
+#   focused active group other screen border color: other_current_screen_border # never seen
+#   unfocused active group current screen border color: this_screen_border
+#   unfocused active group other screen border color: other_screen_border # never seen
+#   inactive group border color: background
+# tasklist colors:
+#   font color: foreground
+#   active window border color: border
+#   inactive window border color: background
+# bar background color

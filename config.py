@@ -204,6 +204,8 @@ my_keys = [
     ["M-c", lazy.spawn("edit_repos"), "Repos Launcher"],
     ["<Print>", lazy.spawn("flameshot gui"), "Take Screenshot"],
     ["M-<XF86Copy>", pick_color, "Pick color"],
+    ["M-S-b", lazy.spawn("blueman-manager"), "Launch Bluetooth Manager"],
+    ["M-S-v", lazy.spawn("pavucontrol"), "Launch Volume Control"],
     # Command keys
     ["M-C-r", lazy.reload_config(), "Reload Qtile config"],
     ["M-A-r", lazy.restart(), "Restart Qtile"],
@@ -323,7 +325,7 @@ floating_layout = layout.Floating(
 )
 auto_fullscreen = True
 focus_on_window_activation = "urgent"
-reconfigure_screens = True
+reconfigure_screens = False
 
 # If things like steam games want to auto-minimize themselves when losing
 # focus, should we respect this or not?
