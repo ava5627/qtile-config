@@ -8,7 +8,7 @@ from qtile_extras.widget.decorations import PowerLineDecoration
 
 from group_config import get_num_monitors, group_screen, groups_list
 from theme import colors, powerline_colors
-from variables import calendar, laptop, terminal, widget_style
+from variables import laptop, terminal, widget_style
 
 
 powerline = {"decorations": [PowerLineDecoration(path="arrow_right", size=10)]}
@@ -131,11 +131,15 @@ def make_widgets_powerline(screen):
             step=5,
             **powerline,
         ),
+        widget.CurrentLayout(
+            padding=10 if laptop else 5,
+            mode='icon' if laptop else 'text',
+            **powerline,
+        ),
         widget.Clock(
             font="Source Code Pro Bold",
             padding=5,
             format="%A, %B %d - %H:%M ",
-            mouse_callbacks={"Button1": lambda: qtile.spawn(calendar)},
         ),
     ]
 
@@ -162,19 +166,7 @@ def make_widgets_powerline(screen):
             notify_below=10,
             **powerline,
         )
-        current_layout = widget.CurrentLayoutIcon(
-            padding=5,
-            scale=0.7,
-            **powerline,
-        )
         pl_list.insert(3, battery_widget)
-        pl_list.insert(5, current_layout)
-    else:
-        current_layout = widget.CurrentLayout(
-            padding=5,
-            **powerline,
-        )
-        pl_list.insert(4, current_layout)
 
     widget_list += make_powerline(pl_list)
     return widget_list

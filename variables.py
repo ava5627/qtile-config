@@ -9,6 +9,5 @@ laptop = hostname == "tachi"
 terminal = "kitty"
 file_manager = "pcmanfm"
 browser = "firefox"
-calendar = "morgen"
 
 widget_style = "powerline"
