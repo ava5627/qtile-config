@@ -119,8 +119,8 @@ def make_widgets_powerline(screen):
         #     json=True,
         # ),
         widget.PulseVolume(
-            unmute_format="  {volume}%",
-            mute_format="  0%",
+            unmute_format="󰕾 {volume}%",
+            mute_format="󰝟 0%",
             padding=5,
             mouse_callbacks={
                 "Button1": lambda: qtile.spawn("pavucontrol"),
