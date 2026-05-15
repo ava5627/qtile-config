@@ -3,33 +3,6 @@ from libqtile.lazy import lazy
 from libqtile.log_utils import logger
 
 
-def get_num_monitors():
-    num_monitors = 0
-    try:
-        from Xlib import display as xdisplay
-
-        display = xdisplay.Display()
-        screen = display.screen()
-        resources = screen.root.xrandr_get_screen_resources()
-
-        for output in resources.outputs:
-            monitor = display.xrandr_get_output_info(output, resources.config_timestamp)
-            preferred = False
-            if hasattr(monitor, "preferred"):
-                preferred = monitor.preferred
-            elif hasattr(monitor, "num_preferred"):
-                preferred = monitor.num_preferred
-            if preferred:
-                num_monitors += 1
-    except ImportError:
-        logger.error("Xlib is not installed")
-    except Exception as e:
-        # always setup at least one monitor
-        logger.error(f"Exception while getting num monitors: {e}")
-    finally:
-        return max(1, num_monitors)
-
-
 def _go_to_group(name):
 
     @lazy.function
@@ -40,9 +13,10 @@ def _go_to_group(name):
 
 
 def go_to_group(qtile, name):
+    num_screens = len(qtile.get_screens())
     old = qtile.current_screen
     group = qtile.groups_map[name]
-    screen = group_screen(group)
+    screen = group_screen(group, num_screens)
     group.toscreen(screen)
     qtile.focus_screen(screen, warp=True)
     if qtile.current_screen != old:
@@ -51,7 +25,7 @@ def go_to_group(qtile, name):
         qtile.current_window.focus(False)
 
 
-def group_screen(group):
+def group_screen(group, num_screens):
     screen = 0
     if group.name in "123456":
         screen = 0
@@ -62,7 +36,7 @@ def group_screen(group):
     else:
         logger.warning(f"Group {group.name} not assigned to a screen")
         screen = 0
-    return screen % get_num_monitors()
+    return screen % num_screens
 
 
 def next_group_in_screen(group, direction):

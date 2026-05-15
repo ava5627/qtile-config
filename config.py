@@ -5,7 +5,7 @@ from libqtile.config import Click, Drag, EzKey, Match
 from libqtile.lazy import lazy
 from libqtile.log_utils import logger
 
-from bar import bar_widget_defaults, screen_list
+from bar import bar_widget_defaults, generate_screens_bar
 from group_config import go_to_group, group_keys, groups_list
 from theme import colors
 from variables import file_manager, qtile_dir, terminal
@@ -280,7 +280,7 @@ widget_defaults = bar_widget_defaults
 extension_defaults = widget_defaults.copy()
 
 
-screens = screen_list
+generate_screens = generate_screens_bar
 
 # Drag floating layouts.
 mouse = [

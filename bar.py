@@ -1,12 +1,12 @@
 from datetime import datetime, timedelta
 
 from libqtile import bar, qtile
-from libqtile.config import Screen
+from libqtile.config import Screen, Output
 from libqtile.log_utils import logger
 from qtile_extras import widget
 from qtile_extras.widget.decorations import PowerLineDecoration
 
-from group_config import get_num_monitors, group_screen, groups_list
+from group_config import group_screen, groups_list
 from theme import colors, powerline_colors
 from variables import laptop, terminal, widget_style
 
@@ -22,13 +22,13 @@ bar_widget_defaults = dict(
 )
 
 
-def make_widgets(screen):
+def make_widgets(screen_index, output, num_screens):
     if widget_style == "powerline":
-        return make_widgets_powerline(screen)
+        return make_widgets_powerline(screen_index, output, num_screens)
     else:
         logger.error(f"Unknown widget style: {widget_style}")
         bar_widget_defaults["background"] = "#ff0000"
-        return make_widgets_powerline(screen)
+        return make_widgets_powerline(screen_index, output, num_screens)
 
 
 def make_powerline(widgets):
@@ -50,7 +50,7 @@ def make_powerline(widgets):
     return powerline
 
 
-def make_widgets_powerline(screen):
+def make_widgets_powerline(screen_index, output, num_screens):
     widget_list = [
         widget.Sep(linewidth=0, padding=6),
         widget.GroupBox(
@@ -73,7 +73,7 @@ def make_widgets_powerline(screen):
             disable_drag=True,
             toggle=False,
             visible_groups=[
-                group.name for group in groups_list if group_screen(group) == screen
+                group.name for group in groups_list if group_screen(group, num_screens) == screen_index
             ],
         ),
         widget.TaskList(
@@ -155,7 +155,7 @@ def make_widgets_powerline(screen):
         ),
     ]
 
-    if screen == get_num_monitors() - 1:
+    if output.port == "DP-2" or num_screens == 1:
         pl_list.insert(-1, systray)
     if laptop:
         battery_widget = widget.Battery(
@@ -204,11 +204,16 @@ def parse_nightscout(data):
     return f"{arrow} {glucose} {delta_s}"
 
 
-screen_list = [
-    Screen(
-        top=bar.Bar(
-            widgets=make_widgets(i), size=24, margin=0, background=colors["background"]
+def generate_screens_bar(outputs: list[Output]) -> list[Screen]:
+    screens = []
+    for i, output in enumerate(outputs):
+        scr = Screen(
+            top=bar.Bar(
+                widgets=make_widgets(i, output, len(outputs)),
+                size=24,
+                margin=0,
+                background=colors["background"],
+            )
         )
-    )
-    for i in range(get_num_monitors())
-]
+        screens.append(scr)
+    return screens
