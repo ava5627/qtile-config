@@ -212,7 +212,6 @@ my_keys = [
     ["M-q", lazy.window.kill(), "Kill focused window"],
     ["M-C-q", lazy.spawn("xkill"), "Kill focused window"],
     ["M-<F1>", lazy.spawn("powermenu"), "Logout Menu"],
-    ["M-<F2>", lazy.spawn("systemctl suspend"), "Suspend"],
     # Media keys
     [
         "<XF86AudioRaiseVolume>",

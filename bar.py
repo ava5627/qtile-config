@@ -1,7 +1,8 @@
+import os
 from datetime import datetime, timedelta
 
 from libqtile import bar, qtile
-from libqtile.config import Screen, Output
+from libqtile.config import Output, Screen
 from libqtile.log_utils import logger
 from qtile_extras import widget
 from qtile_extras.widget.decorations import PowerLineDecoration
@@ -9,7 +10,6 @@ from qtile_extras.widget.decorations import PowerLineDecoration
 from group_config import group_screen, groups_list
 from theme import colors, powerline_colors
 from variables import laptop, terminal, widget_style
-
 
 powerline = {"decorations": [PowerLineDecoration(path="arrow_right", size=10)]}
 
@@ -73,7 +73,9 @@ def make_widgets_powerline(screen_index, output, num_screens):
             disable_drag=True,
             toggle=False,
             visible_groups=[
-                group.name for group in groups_list if group_screen(group, num_screens) == screen_index
+                group.name
+                for group in groups_list
+                if group_screen(group, num_screens) == screen_index
             ],
         ),
         widget.TaskList(
@@ -133,7 +135,7 @@ def make_widgets_powerline(screen_index, output, num_screens):
         ),
         widget.CurrentLayout(
             padding=10 if laptop else 5,
-            mode='icon' if laptop else 'text',
+            mode="icon" if laptop else "text",
             **powerline,
         ),
         widget.Clock(
@@ -213,7 +215,9 @@ def generate_screens_bar(outputs: list[Output]) -> list[Screen]:
                 size=24,
                 margin=0,
                 background=colors["background"],
-            )
+            ),
+            wallpaper=os.environ.get("WALLPAPER", None),
+            wallpaper_mode="fill",
         )
         screens.append(scr)
     return screens
