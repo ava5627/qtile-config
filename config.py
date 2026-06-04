@@ -353,10 +353,11 @@ def set_floating(window):
 
 @hook.subscribe.client_new
 def fix_group(window):
-    if "discord" not in window.get_wm_class():
-        group = qtile.current_group
-        if window.group != group:
-            window.togroup(group.name)
+    fix_classes = ["discord", "equibop"]
+    should_fix = all(fix_class not in window.get_wm_class() for fix_class in fix_classes)
+    group = qtile.current_group
+    if should_fix and window.group != group:
+        window.togroup(group.name)
 
 
 @hook.subscribe.client_urgent_hint_changed

@@ -102,7 +102,7 @@ groups_dict = {
     Group("4", matches=[]): "A-1",
     Group("5", matches=[]): "A-2",
     Group("6", matches=[]): "A-3",
-    Group("a", matches=[Match(wm_class="discord")]): "4",
+    Group("a", matches=[Match(wm_class="discord"), Match(wm_class="equibop")]): "4",
     Group("s", matches=[]): "5",
     Group("d", matches=[]): "6",
     Group("u", matches=[]): "A-4",

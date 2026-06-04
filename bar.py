@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 from datetime import datetime, timedelta
 
 from libqtile import bar, qtile
@@ -208,6 +208,9 @@ def parse_nightscout(data):
 
 def generate_screens_bar(outputs: list[Output]) -> list[Screen]:
     screens = []
+    wallpaper_path = Path("~/.config/qtile/wallpaper.jpg").expanduser()
+    if not wallpaper_path.exists():
+        wallpaper_path = Path("~/Pictures/Wallpapers/Death Star.jpg").expanduser()
     for i, output in enumerate(outputs):
         scr = Screen(
             top=bar.Bar(
@@ -216,7 +219,7 @@ def generate_screens_bar(outputs: list[Output]) -> list[Screen]:
                 margin=0,
                 background=colors["background"],
             ),
-            wallpaper=os.environ.get("WALLPAPER", None),
+            wallpaper=wallpaper_path.as_posix(),
             wallpaper_mode="fill",
         )
         screens.append(scr)
