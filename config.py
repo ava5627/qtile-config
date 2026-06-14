@@ -345,10 +345,11 @@ def start_once():
     # go_to_group(qtile, "1")
 
 
-@hook.subscribe.client_new
-def set_floating(window):
-    if window.window.get_wm_transient_for():
-        window.floating = True
+# probably unnecessary now 2026-06-14
+# @hook.subscribe.client_new
+# def set_floating(window):
+#     if window.window.get_wm_transient_for():
+#         window.floating = True
 
 
 @hook.subscribe.client_new
